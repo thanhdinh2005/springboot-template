@@ -2,29 +2,54 @@ spring:
   application:
     name: backend
 
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    validate-on-migrate: true
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
 server:
-  port: ${APP_PORT:8081}
+  port: ${APP_PORT:8080}
   servlet:
     context-path: /api
 
 springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    operationsSorter: alpha
-    configUrl: /api/api-docs/swagger-config
-    url: /api/api-docs
   api-docs:
     path: /api-docs
 
-app:
-  cors:
-    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:5500}
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: alpha
 
 management:
   endpoints:
     web:
       exposure:
         include: health,info,prometheus
-  endpoint:
-    health:
-      show-details: always
+
+app:
+  cors:
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:5173}
+
+logging:
+  level:
+    root: INFO
+
+application:
+  security:
+    jwt:
+      expiration: ${TOKEN_EXP:3600000}
+      refresh-expiration-ms: ${REFRESH_EXP:86400000}
