@@ -37,6 +37,8 @@ services:
       - local-net
     depends_on:
       - postgres
+    volumes:
+      - /var/log/app:/app/logs
 
 volumes:
   postgres_data:
